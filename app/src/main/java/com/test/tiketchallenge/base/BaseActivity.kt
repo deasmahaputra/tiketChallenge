@@ -1,5 +1,8 @@
 package com.test.tiketchallenge.base
 
-abstract class BaseActivity{
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.ViewDataBinding
+
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel<*>> : AppCompatActivity(), BaseFragment.Callback {
 
 }
