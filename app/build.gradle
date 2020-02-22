@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 29
@@ -25,11 +24,57 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation language.kotlin
+    implementation language.kotlinjre
+    implementation language.kotlinreflect
+
+    implementation supportDependencies.multidex
+    implementation supportDependencies.support
+    implementation supportDependencies.appcompat
+    implementation supportDependencies.design
+    implementation supportDependencies.percent
+    implementation supportDependencies.cardview
+    implementation supportDependencies.recyclerview
+    implementation supportDependencies.customtabs
+    implementation supportDependencies.constraintLayout
+
+    implementation libraries.dagger
+    kapt libraries.daggercompiler
+    kapt libraries.daggerandroidproces
+    implementation libraries.daggerandroidsupport
+    implementation libraries.rxandroid
+    implementation libraries.rxjava
+    implementation libraries.retrofit
+    implementation libraries.retrofitrx
+    implementation libraries.retrofitgson
+    implementation libraries.okhttp
+    implementation libraries.okhttplogging
+    implementation libraries.glide
+    implementation libraries.glideokHttp
+    kapt 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation libraries.coroutines
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
+    implementation jatpack.extension
+    implementation jatpack.lifecycle
+
+
+    implementation libraries.rxRelay
+    implementation libraries.viewpager2
+    implementation libraries.material
+
+    debugImplementation libraries.chuckDebug
+    releaseImplementation libraries.chuckRelease
+
+    testImplementation testLibraries.junit
+    testImplementation testLibraries.mockito
+
+    androidTestImplementation(testLibraries.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    androidTestImplementation testLibraries.mockito
 }

@@ -1,0 +1,69 @@
+ext {
+    language = [
+            kotlin        : "org.jetbrains.kotlin:kotlin-stdlib:${kotlinPluginVersion}",
+            kotlinjre     : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinPluginVersion}",
+            kotlinreflect : "org.jetbrains.kotlin:kotlin-reflect:${kotlinPluginVersion}"
+    ]
+
+    supportDependencies = [
+            support          : "com.android.support:support-v4:${supportLibraryVersion}",
+            appcompat        : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            design           : "com.android.support:design:${supportLibraryVersion}",
+            percent          : "com.android.support:percent:${supportLibraryVersion}",
+            cardview         : "com.android.support:cardview-v7:${supportLibraryVersion}",
+            recyclerview     : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+            customtabs       : "com.android.support:customtabs:${supportLibraryVersion}",
+            multidex         : "com.android.support:multidex:1.0.1",
+            constraintLayout : "com.android.support.constraint:constraint-layout:1.0.2"
+    ]
+
+    libraries = [
+            anko                 : "org.jetbrains.anko:anko:${ankoLibraryVersion}",
+            ankocommons          : "org.jetbrains.anko:anko-commons:${ankoLibraryVersion}",
+            dagger               : "com.google.dagger:dagger:${daggerLibraryVersion}",
+            daggercompiler       : "com.google.dagger:dagger-compiler:${daggerLibraryVersion}",
+            daggerandroidproces  : "com.google.dagger:dagger-android-processor:${daggerLibraryVersion}",
+            daggerandroidsupport : "com.google.dagger:dagger-android-support:${daggerLibraryVersion}",
+            okhttp               : "com.squareup.okhttp3:okhttp:${okHttpLibraryVersion}",
+            okhttplogging        : "com.squareup.okhttp3:logging-interceptor:${okHttpLibraryVersion}",
+            retrofit             : "com.squareup.retrofit2:retrofit:${retrofitLibraryVersion}",
+            retrofitrx           : "com.squareup.retrofit2:adapter-rxjava2:${retrofitLibraryVersion}",
+            retrofitgson         : "com.squareup.retrofit2:converter-gson:${retrofitLibraryVersion}",
+            rxandroid            : "io.reactivex.rxjava2:rxandroid:2.1.0",
+            rxjava               : "io.reactivex.rxjava2:rxjava:2.2.2",
+            glide                : "com.github.bumptech.glide:glide:3.8.0",
+            glideokHttp          : "com.github.bumptech.glide:okhttp3-integration:1.5.0@aar",
+            crashlytics          : "com.crashlytics.sdk.android:crashlytics:2.9.5@aar",
+            facebooksdk          : "com.facebook.android:facebook-android-sdk:4.23.0",
+            greendao             : "org.greenrobot:greendao:3.2.2",
+            evernotejob          : "com.evernote:android-job:1.2.1",
+            boltstasks           : "com.parse.bolts:bolts-tasks:1.4.0",
+            concurrent           : "com.github.onehilltech.concurrent:concurrent-android:0.8.1",
+            checkroot            : "com.scottyab:rootbeer-lib:0.0.6",
+            appsflyer            : "com.appsflyer:af-android-sdk:4+@aar",
+            installreferrer      : "com.android.installreferrer:installreferrer:1.0",
+            securePref           : "com.scottyab:secure-preferences-lib:0.1.4",
+            lottie               : "com.airbnb.android:lottie:2.5.1",
+            shimmer              : "com.facebook.shimmer:shimmer:0.3.0",
+            coroutines           : "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1",
+            coroutines           : "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1",
+            rxRelay              : "com.jakewharton.rxrelay2:rxrelay:2.1.1",
+            viewpager2           : "androidx.viewpager2:viewpager2:1.0.0",
+            material             : "com.google.android.material:material:1.2.0-alpha02",
+            chuckDebug         : "com.readystatesoftware.chuck:library:1.1.0",
+            chuckRelease       : "com.readystatesoftware.chuck:library-no-op:1.1.0"
+
+
+    ]
+
+    jatpack = [
+            extension : "androidx.lifecycle:lifecycle-extensions:2.0.0",
+            lifecycle : "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
+    ]
+
+    testLibraries = [
+            junit    : "junit:junit:4.12",
+            mockito  : "org.mockito:mockito-core:2.1.0",
+            espresso : "com.android.support.test.espresso:espresso-core:2.2.2"
+    ]
+}
