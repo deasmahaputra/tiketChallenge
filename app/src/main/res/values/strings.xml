@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TiketChallenge</string>
+    <string name="title_no_connection">Something Went Wrong..</string>
+    <string name="text_no_connection">An alien is probably blocking your signal.</string>
+    <string name="text_retry">retry</string>
+    <string name="toolbar_title">Github User Finder</string>
 </resources>
