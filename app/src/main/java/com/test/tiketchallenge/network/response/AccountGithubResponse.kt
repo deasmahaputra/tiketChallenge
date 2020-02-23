@@ -1,7 +1,7 @@
 package com.test.tiketchallenge.network.response
 
 data class AccountGithubResponse(
-	val totalCount: Int? = null,
-	val incompleteResults: Boolean? = null,
-	val items: List<ItemsItem?>? = null
+	var total_count: Int? = null,
+	var incomplete_results: Boolean? = null,
+	var items: List<ItemsItem?>? = null
 )

@@ -1,10 +1,8 @@
 package com.test.tiketchallenge.di
 
-import android.content.Context
-import androidx.multidex.BuildConfig
-import com.test.tiketchallenge.network.ApiService
-import com.test.tiketchallenge.network.BaseUrl
-import com.test.tiketchallenge.network.NetworkService
+import com.test.tiketchallenge.BuildConfig
+import com.test.tiketchallenge.network.*
+import com.test.tiketchallenge.stored.PreferencesManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -17,20 +15,32 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class NetworkModule{
+class NetworkModule {
 
     @Provides
     @Singleton
     @Suppress("ConstantConditionIf")
     fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val loggingLevel = if (BuildConfig.BUILD_TYPE == "release") HttpLoggingInterceptor.Level.NONE else HttpLoggingInterceptor.Level.BODY
+        val loggingLevel =
+            if (BuildConfig.BUILD_TYPE == "release") HttpLoggingInterceptor.Level.NONE else HttpLoggingInterceptor.Level.BODY
         return HttpLoggingInterceptor().setLevel(loggingLevel)
     }
 
     @Provides
     @Singleton
-    fun providesOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun providesHttpHeaderInterceptor(
+        preferencesManager: PreferencesManager
+    ): HttpHeaderInterceptor = HttpHeaderInterceptor(preferencesManager)
+
+
+    @Provides
+    @Singleton
+    fun providesOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor,
+        headerInterceptor: HttpHeaderInterceptor
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(headerInterceptor)
             .addInterceptor(loggingInterceptor)
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
@@ -53,7 +63,7 @@ class NetworkModule{
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BaseUrl.BASE_URL)
+            .baseUrl(BuildConfig.ENDPOINT)
             .client(okHttpClient)
             .build()
     }
@@ -65,17 +75,20 @@ class NetworkModule{
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BaseUrl.BASE_URL)
+            .baseUrl(BuildConfig.ENDPOINT)
             .client(okHttpClient)
             .build()
     }
 
     @Provides
     @Singleton
-    fun providesNetworkService(retrofit: Retrofit): NetworkService = retrofit.create(NetworkService::class.java)
+    fun providesNetworkService(retrofit: Retrofit): NetworkService = retrofit.create(
+        NetworkService::class.java
+    )
 
     @Provides
     @Singleton
-    fun providesApiService(networkService: NetworkService): ApiService = ApiService(networkService)
+    fun providesApiService(networkService: NetworkService): ApiService =
+        ApiService(networkService)
 
 }

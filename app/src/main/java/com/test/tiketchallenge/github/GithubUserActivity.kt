@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.test.tiketchallenge.R
 import com.test.tiketchallenge.base.BaseActivity
 import com.test.tiketchallenge.databinding.ActivityGithubBinding
+import com.test.tiketchallenge.extension.afterTextChanged
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import kotlinx.android.synthetic.main.activity_github.*
 import javax.inject.Inject
 
 class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewModel>(), GithubUserContract, HasSupportFragmentInjector {
@@ -44,12 +46,22 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
 
         viewModel.fetchGithubAccount()
 
-        viewModel.onInputStateChanged("deasmahaputra")
+        viewModel.getDeas()
+
+
 
         initViews()
     }
 
     private fun initViews() {
 
+        accounnt_name_et.afterTextChanged {
+            handleInputQuery(it)
+        }
+
+    }
+
+    private fun handleInputQuery(it: String) {
+        viewModel.onInputStateChanged(it)
     }
 }

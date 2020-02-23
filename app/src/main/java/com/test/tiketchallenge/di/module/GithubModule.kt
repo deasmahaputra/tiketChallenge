@@ -10,14 +10,24 @@ import dagger.Provides
 @Module
 class GithubModule {
 
+//    @Provides
+//    internal fun provideGithubModule(apiService: ApiService): GithubUserViewModel {
+//        return GithubUserViewModel(apiService)
+//    }
+//
+//    @Provides
+//    internal fun githubModelProvider(githubModel: GithubUserViewModel): ViewModelProvider.Factory {
+//        return ViewModelProviderFactory(githubModel)
+//    }
+
     @Provides
-    internal fun provideHomeModule(apiService: ApiService): GithubUserViewModel {
+    internal fun provideGithubModule(apiService: ApiService) : GithubUserViewModel{
         return GithubUserViewModel(apiService)
     }
 
     @Provides
-    internal fun homeModelProvider(githubModel: GithubUserViewModel): ViewModelProvider.Factory {
-        return ViewModelProviderFactory(githubModel)
+    internal fun githubModelModule(githubUserViewModel: GithubUserViewModel) : ViewModelProvider.Factory {
+        return ViewModelProviderFactory(githubUserViewModel)
     }
 
 }
