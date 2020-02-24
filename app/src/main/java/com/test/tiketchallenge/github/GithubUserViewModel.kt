@@ -1,12 +1,10 @@
 package com.test.tiketchallenge.github
 
 import android.text.TextUtils
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.jakewharton.rxrelay2.PublishRelay
 import com.test.tiketchallenge.base.BaseViewModel
 import com.test.tiketchallenge.extension.configured
-import com.test.tiketchallenge.network.ApiResponseCallback
 import com.test.tiketchallenge.network.ApiService
 import com.test.tiketchallenge.network.NetworkError
 import com.test.tiketchallenge.network.response.AccountGithubResponse
@@ -16,24 +14,26 @@ import java.io.InterruptedIOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+
 class GithubUserViewModel @Inject constructor(private var apiService : ApiService) : BaseViewModel<GithubUserContract>(apiService){
 
     private val autoCompletePublishSubject = PublishRelay.create<String>()
-    private var githubAccount : MutableLiveData<AccountGithubResponse> = MutableLiveData()
+    var githubAccount : MutableLiveData<AccountGithubResponse> = MutableLiveData()
+    var isGithubAccountSearching : MutableLiveData<Boolean> = MutableLiveData()
     private val composite = CompositeDisposable()
 
-    fun fetchGithubAccount(){
-
+    private fun fetchGithubAccount(page : Int, query : String){
+        autoCompletePublishSubject.accept(query)
             val disposable = autoCompletePublishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .switchMap{
-                    if(it.length < 2 || (TextUtils.isDigitsOnly(it) && it.length < 12)){
+                    if(it.length < 3 || (TextUtils.isDigitsOnly(it))){
                         Observable.just(AccountGithubResponse())
-                    } else if (!TextUtils.isDigitsOnly(it)) apiService.fetchGithubAccount(it)
-                    else apiService.fetchGithubAccount( it)
+                    } else if (!TextUtils.isDigitsOnly(it)) apiService.fetchGithubAccount(it, page)
+                    else apiService.fetchGithubAccount( it, page)
                 }.configured().doOnNext {
+                    isGithubAccountSearching.value = true
                     githubAccount.value = AccountGithubResponse()
-                    Log.d("TESTTTT $$", it.total_count.toString())
                 }
                 .retryWhen { errors ->
                     errors.flatMap { error ->
@@ -43,38 +43,22 @@ class GithubUserViewModel @Inject constructor(private var apiService : ApiServic
                     }
                 }
                 .subscribe({ result ->
+                    isGithubAccountSearching.value = false
                     githubAccount.value = result
-                    Log.d("TESTTTT ##", result.total_count.toString())
                 }, { t: Throwable ->
+                    isGithubAccountSearching.value = false
                     val error = NetworkError(t)
                     errorMessage.value = error.getErrorMessage()
                     githubAccount.value = AccountGithubResponse()
-
+                    getNavigator().errorConnection()
                 })
 
         composite.add(disposable)
 
     }
 
-    fun onInputStateChanged(query: String) {
-        autoCompletePublishSubject.accept(query)
+    fun onInputStateChanged(query: String, page: Int) {
+        isGithubAccountSearching.value = true
+        fetchGithubAccount(page, query)
     }
-
-    fun getDeas(){
-        val disposable = apiService.getData(object : ApiResponseCallback<AccountGithubResponse>{
-            override fun onSuccess(response: AccountGithubResponse) {
-                Log.d("TESTTTT", response.total_count.toString())
-            }
-
-            override fun onError(error: NetworkError) {
-                Log.d("TESTTTT", "ERROR")
-            }
-
-        })
-
-        composite.add(disposable)
-    }
-
-
-
 }

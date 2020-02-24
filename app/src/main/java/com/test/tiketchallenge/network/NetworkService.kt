@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface NetworkService{
 
     @GET(BuildConfig.ENDPOINT + "search/users")
-    fun fetchGithubAccount(@Query("q") accountName : String?) : Observable<AccountGithubResponse>
+    fun fetchGithubAccount(@Query("q") accountName : String?, @Query("page") page : Int) : Observable<AccountGithubResponse>
 
     @GET(BuildConfig.ENDPOINT + "search/users?q=deasmahaputra")
     fun getDeas() : Observable<AccountGithubResponse>

@@ -8,8 +8,8 @@ import io.reactivex.disposables.Disposable
 
 class ApiService(private val networkService: NetworkService){
 
-    fun fetchGithubAccount(name : String) : ObservableSource<AccountGithubResponse>{
-        return networkService.fetchGithubAccount(name)
+    fun fetchGithubAccount(name : String, page : Int) : ObservableSource<AccountGithubResponse>{
+        return networkService.fetchGithubAccount(name, page)
     }
 
     fun getData(callback: ApiResponseCallback<AccountGithubResponse>) : Disposable{
