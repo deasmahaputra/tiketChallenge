@@ -1,5 +1,6 @@
 package com.test.tiketchallenge.github
 
+import android.annotation.SuppressLint
 import com.test.tiketchallenge.github.adapter.PaginationScrollListener
 import android.os.Bundle
 import android.view.View
@@ -17,9 +18,14 @@ import com.test.tiketchallenge.github.adapter.GithubUserAdapter
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_github.*
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-
+import kotlin.concurrent.schedule
 
 
 class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewModel>(), GithubUserContract, HasSupportFragmentInjector {
@@ -38,8 +44,6 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
 
     private lateinit var layoutManager  : LinearLayoutManager
 
-    private var isLastPage: Boolean = false
-    private var isLoading: Boolean = false
 
     private var defPage = 0
 
@@ -73,6 +77,7 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
     private fun initViews() {
         layoutFailure.visibility = View.GONE
         progressBar.visibility = View.GONE
+        progressBarScroll.visibility = View.GONE
 
 
         accounnt_name_et.afterTextChanged {
@@ -84,8 +89,8 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
         viewModel.githubAccount.observe(this, Observer { githubAccount ->
             val githubAccountData = githubAccount.items
             if(githubAccountData?.isNotEmpty() == true){
-                isLoading = false
                 progressBar.visibility = View.GONE
+                progressBarScroll.visibility = View.GONE
                 layoutSuccess.visibility = View.VISIBLE
                 layoutFailure.visibility = View.GONE
                 adapter.setDataAccount(githubAccountData)
@@ -97,6 +102,7 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
                 progressBar.visibility = View.VISIBLE
             }else{
                 progressBar.visibility = View.GONE
+                progressBarScroll.visibility = View.GONE
             }
         })
 
@@ -111,9 +117,19 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
 
     private fun scrollData(page: Int): PaginationScrollListener {
         return object : PaginationScrollListener() {
+            @SuppressLint("CheckResult")
             override fun onLoadMore() {
-                defPage += 1
-                viewModel.onInputStateChanged(accounnt_name_et.text.toString(), defPage)
+                progressBarScroll.visibility = View.VISIBLE
+                Completable
+                    .timer(3, TimeUnit.SECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        defPage += 1
+                        viewModel.onInputStateChanged(accounnt_name_et.text.toString(), defPage)
+                    }, {
+
+                    })
             }
         }
     }
