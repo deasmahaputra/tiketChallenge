@@ -65,6 +65,7 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
         adapter = GithubUserAdapter(this)
         github_rv.adapter = adapter
 
+        viewModel.fetchGithubAccount()
 
         initViews()
     }
@@ -75,8 +76,9 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
 
 
         accounnt_name_et.afterTextChanged {
-            handleInputQuery(it, 0)
+            viewModel.onInputStateChanged(it, defPage)
             adapter.clearData()
+            defPage = 0
         }
 
         viewModel.githubAccount.observe(this, Observer { githubAccount ->
@@ -98,31 +100,8 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
             }
         })
 
-//        github_rv.addOnScrollListener(object : com.test.tiketchallenge.github.adapter.PaginationScrollListener(layoutManager){
-//            override fun isLastPage(): Boolean {
-//                return isLastPage
-//            }
-//
-//            override fun isLoading(): Boolean {
-//                return isLoading
-//            }
-//
-//            override fun loadMoreItems() {
-//                isLoading = true
-//                progressBar.visibility = View.VISIBLE
-//                defPage += 1
-//                viewModel.onInputStateChanged(accounnt_name_et.text.toString(), defPage)
-//            }
-//
-//        })
-
-        defPage += 1
         github_rv.addOnScrollListener(scrollData(defPage))
 
-    }
-
-    private fun handleInputQuery(it: String, page : Int) {
-        viewModel.onInputStateChanged(it, page)
     }
 
     override fun errorConnection() {
@@ -133,7 +112,8 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
     private fun scrollData(page: Int): PaginationScrollListener {
         return object : PaginationScrollListener() {
             override fun onLoadMore() {
-                viewModel.onInputStateChanged(accounnt_name_et.text.toString(), page)
+                defPage += 1
+                viewModel.onInputStateChanged(accounnt_name_et.text.toString(), defPage)
             }
         }
     }

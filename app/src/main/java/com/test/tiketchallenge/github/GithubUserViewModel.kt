@@ -7,6 +7,7 @@ import com.test.tiketchallenge.base.BaseViewModel
 import com.test.tiketchallenge.extension.configured
 import com.test.tiketchallenge.network.ApiService
 import com.test.tiketchallenge.network.NetworkError
+import com.test.tiketchallenge.network.QueryPageRequest
 import com.test.tiketchallenge.network.response.AccountGithubResponse
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -17,20 +18,22 @@ import javax.inject.Inject
 
 class GithubUserViewModel @Inject constructor(private var apiService : ApiService) : BaseViewModel<GithubUserContract>(apiService){
 
-    private val autoCompletePublishSubject = PublishRelay.create<String>()
+    private val autoCompletePublishSubject = PublishRelay.create<QueryPageRequest>()
     var githubAccount : MutableLiveData<AccountGithubResponse> = MutableLiveData()
     var isGithubAccountSearching : MutableLiveData<Boolean> = MutableLiveData()
     private val composite = CompositeDisposable()
+    private var tempQuery = ""
+    private var page = 0
 
-    private fun fetchGithubAccount(page : Int, query : String){
-        autoCompletePublishSubject.accept(query)
+    fun fetchGithubAccount(){
             val disposable = autoCompletePublishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .switchMap{
-                    if(it.length < 3 || (TextUtils.isDigitsOnly(it))){
+                    if(it.query?.length!! < 3 || (TextUtils.isDigitsOnly(it.query) && it.query?.length!! < 12)){
                         Observable.just(AccountGithubResponse())
-                    } else if (!TextUtils.isDigitsOnly(it)) apiService.fetchGithubAccount(it, page)
-                    else apiService.fetchGithubAccount( it, page)
+                    } else if (!TextUtils.isDigitsOnly(it.query)) apiService.fetchGithubAccount(it.query?:"", it.page?:0)
+                    else apiService.fetchGithubAccount(it.query?:"", it.page?:0)
+
                 }.configured().doOnNext {
                     isGithubAccountSearching.value = true
                     githubAccount.value = AccountGithubResponse()
@@ -58,7 +61,9 @@ class GithubUserViewModel @Inject constructor(private var apiService : ApiServic
     }
 
     fun onInputStateChanged(query: String, page: Int) {
+        var queryPage = QueryPageRequest(query, page)
+        autoCompletePublishSubject.accept(queryPage)
         isGithubAccountSearching.value = true
-        fetchGithubAccount(page, query)
+        //fetchGithubAccount(page, query)
     }
 }
