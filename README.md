@@ -14,7 +14,7 @@ Project Spesifications
 Libraries Used
 --------------
 * [Foundation][0] - Components for core system capabilities, Kotlin extensions and support for
-  multidex and automated testing.
+  multidex.
   * [AppCompat][1] - Degrade gracefully on older versions of Android.
 * [Architecture][10] - A collection of libraries that help you design robust, testable, and
   maintainable apps. Start with classes for managing your UI component lifecycle and handling data
