@@ -64,6 +64,9 @@ class GithubUserViewModel @Inject constructor(private var apiService : ApiServic
         var queryPage = QueryPageRequest(query, page)
         autoCompletePublishSubject.accept(queryPage)
         isGithubAccountSearching.value = true
-        //fetchGithubAccount(page, query)
+    }
+
+    fun onDestroy(){
+        composite.clear()
     }
 }

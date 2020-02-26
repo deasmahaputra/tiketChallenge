@@ -1,6 +1,7 @@
 package com.test.tiketchallenge.github
 
 import android.annotation.SuppressLint
+import android.content.Context
 import com.test.tiketchallenge.github.adapter.PaginationScrollListener
 import android.os.Bundle
 import android.view.View
@@ -75,12 +76,7 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
     }
 
     private fun initViews() {
-        layoutFailure.visibility = View.GONE
-        progressBar.visibility = View.GONE
-        progressBarScroll.visibility = View.GONE
-
-
-        accounnt_name_et.afterTextChanged {
+        binding.accounntNameEt.afterTextChanged {
             viewModel.onInputStateChanged(it, defPage)
             adapter.clearData()
             defPage = 0
@@ -89,37 +85,40 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
         viewModel.githubAccount.observe(this, Observer { githubAccount ->
             val githubAccountData = githubAccount.items
             if(githubAccountData?.isNotEmpty() == true){
-                progressBar.visibility = View.GONE
-                progressBarScroll.visibility = View.GONE
-                layoutSuccess.visibility = View.VISIBLE
-                layoutFailure.visibility = View.GONE
+                setAccountAvailable(true)
                 adapter.setDataAccount(githubAccountData)
+            }else{
+                setAccountAvailable(false)
             }
         })
 
         viewModel.isGithubAccountSearching.observe(this, Observer {
             if(it == true){
-                progressBar.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.VISIBLE
+                binding.textNotFound.visibility = View.GONE
+                binding.layoutFailure.visibility = View.GONE
             }else{
-                progressBar.visibility = View.GONE
-                progressBarScroll.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
+                binding.progressBarScroll.visibility = View.GONE
             }
         })
 
-        github_rv.addOnScrollListener(scrollData(defPage))
+        binding.githubRv.addOnScrollListener(scrollData(defPage))
+
 
     }
 
     override fun errorConnection() {
-        layoutSuccess.visibility = View.GONE
-        layoutFailure.visibility = View.VISIBLE
+        binding.layoutSuccess.visibility = View.GONE
+        binding.layoutFailure.visibility = View.VISIBLE
+        binding.textNotFound.visibility = View.GONE
     }
 
     private fun scrollData(page: Int): PaginationScrollListener {
         return object : PaginationScrollListener() {
             @SuppressLint("CheckResult")
             override fun onLoadMore() {
-                progressBarScroll.visibility = View.VISIBLE
+                binding.progressBarScroll.visibility = View.VISIBLE
                 Completable
                     .timer(3, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
@@ -128,9 +127,30 @@ class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewMod
                         defPage += 1
                         viewModel.onInputStateChanged(accounnt_name_et.text.toString(), defPage)
                     }, {
-
+                        binding.textNotFound.visibility = View.GONE
                     })
             }
         }
+    }
+
+    private fun setAccountAvailable(it : Boolean){
+        if(it){
+            binding.layoutSuccess.visibility = View.VISIBLE
+            binding.textNotFound.visibility = View.GONE
+            binding.progressBar.visibility = View.GONE
+            binding.progressBarScroll.visibility = View.GONE
+            binding.layoutFailure.visibility = View.GONE
+        }else{
+            if(binding.accounntNameEt.text?.isEmpty() == true){
+                binding.textNotFound.visibility = View.GONE
+            }else{
+                binding.textNotFound.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
     }
 }

@@ -125,23 +125,6 @@
                         android:textSize="15sp"
                         app:layout_constraintTop_toBottomOf="@+id/textTitleNoConnection" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/retryButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/shape_border_green"
-                        android:text="@string/text_retry"
-                        android:textColor="@color/greenButton"
-                        android:textSize="15sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textMessageNoConnection" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -165,15 +148,28 @@
 
                     </androidx.recyclerview.widget.RecyclerView>
 
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginBottom="30dp"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/github_rv" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutSuccess" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textNotFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Account does not exist"
+                    android:textColor="@color/colorTextTitle"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
