@@ -48,5 +48,7 @@ Android Studio IDE setup
 For development, the latest version of Android Studio 3.4.2 is required. The latest version can be
 downloaded from [here](https://developer.android.com/studio/).
 
-ScreenShoot
+ScreenShoots
+----------------------
 ![WhatsApp Image 2020-02-26 at 23 09 00 (3)](https://user-images.githubusercontent.com/17407370/75363767-2802ff80-58ed-11ea-86cd-7bcf5caf65a0.jpeg)
+![WhatsApp Image 2020-02-26 at 23 09 00 (2)](https://user-images.githubusercontent.com/17407370/75364018-96e05880-58ed-11ea-98a8-8cc79a0a4e8a.jpeg)
