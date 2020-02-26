@@ -50,6 +50,7 @@ downloaded from [here](https://developer.android.com/studio/).
 ScreenShoots
 ----------------------
 ![WhatsApp Image 2020-02-26 at 23 09 00 (3)](https://user-images.githubusercontent.com/17407370/75363767-2802ff80-58ed-11ea-86cd-7bcf5caf65a0.jpeg)
+![WhatsApp Image 2020-02-26 at 23 09 00 (2)](https://user-images.githubusercontent.com/17407370/75367014-37387c00-58f2-11ea-9bb3-1dd4b4a3ddba.jpeg)
 ![WhatsApp Image 2020-02-26 at 23 09 00 (1)](https://user-images.githubusercontent.com/17407370/75364264-03f3ee00-58ee-11ea-9fb3-feb28c3a618a.jpeg)
 ![WhatsApp Image 2020-02-26 at 23 09 00](https://user-images.githubusercontent.com/17407370/75364277-0b1afc00-58ee-11ea-93c2-7fdb9e26e6ad.jpeg)
 
