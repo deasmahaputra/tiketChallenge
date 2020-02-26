@@ -1,8 +1,6 @@
 package com.test.tiketchallenge.github
 
 import android.annotation.SuppressLint
-import android.content.Context
-import com.test.tiketchallenge.github.adapter.PaginationScrollListener
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.library.baseAdapters.BR
@@ -16,6 +14,7 @@ import com.test.tiketchallenge.base.BaseActivity
 import com.test.tiketchallenge.databinding.ActivityGithubBinding
 import com.test.tiketchallenge.extension.afterTextChanged
 import com.test.tiketchallenge.github.adapter.GithubUserAdapter
+import com.test.tiketchallenge.github.adapter.PaginationScrollListener
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -23,10 +22,8 @@ import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_github.*
-import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.concurrent.schedule
 
 
 class GithubUserActivity : BaseActivity<ActivityGithubBinding, GithubUserViewModel>(), GithubUserContract, HasSupportFragmentInjector {

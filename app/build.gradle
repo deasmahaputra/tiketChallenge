@@ -19,8 +19,6 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            applicationIdSuffix ".dev"
-            versionNameSuffix "-dev"
             buildConfigField 'String', 'ENDPOINT', "${endPoint}"
         }
 

@@ -29,10 +29,9 @@ class GithubUserViewModel @Inject constructor(private var apiService : ApiServic
             val disposable = autoCompletePublishSubject
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .switchMap{
-                    if(it.query?.length!! < 3 || (TextUtils.isDigitsOnly(it.query) && it.query?.length!! < 12)){
+                    if(it.query?.length?:0 < 2){
                         Observable.just(AccountGithubResponse())
-                    } else if (!TextUtils.isDigitsOnly(it.query)) apiService.fetchGithubAccount(it.query?:"", it.page?:0)
-                    else apiService.fetchGithubAccount(it.query?:"", it.page?:0)
+                    } else apiService.fetchGithubAccount(it.query?:"", it.page?:0)
 
                 }.configured().doOnNext {
                     isGithubAccountSearching.value = true
