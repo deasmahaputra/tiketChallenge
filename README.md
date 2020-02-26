@@ -21,7 +21,6 @@ Libraries Used
   persistence.
   * [Navigation][14] - Handle everything needed for in-app navigation.
 * [UI][30] - Details on why and how to use UI Components in your apps - together or separate
-  * [Animations & Transitions][31] - Move widgets and transition between screens.
   * [Layout][35] - Lay out widgets using different algorithms.
 * Third party
   * [RXJava][91] Reactive Extensions for the JVM
